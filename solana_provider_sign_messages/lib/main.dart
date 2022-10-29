@@ -63,6 +63,15 @@ class _SignMessagesExamplePageState extends State<SignMessagesExamplePage> {
   /// The provider widget found in the widget tree.
   late final SolanaWalletProviderState provider;
 
+  /// SolanaWalletProvider.initialize().
+  late final Future<void> _initFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _initFuture = SolanaWalletProvider.initialize();
+  }
+
   /// Initialise [provider].
   @override
   void didChangeDependencies() {
@@ -123,26 +132,40 @@ class _SignMessagesExamplePageState extends State<SignMessagesExamplePage> {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: () => signMessage(), 
-              child: const Text(
-                'Sign Message',
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            if (message != null)
-              Text(
-                message,
-                textAlign: TextAlign.center,
-              ),
-          ],
+        child: FutureBuilder(
+          future: _initFuture,
+          builder: (context, snapshot) {
+
+            if (snapshot.hasError) {
+              return Text('${snapshot.error ?? 'Failed to initialize SolanaWalletProvider.'}');
+            }
+
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const CircularProgressIndicator();
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () => signMessage(), 
+                  child: const Text(
+                    'Sign Message',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                if (message != null)
+                  Text(
+                    message,
+                    textAlign: TextAlign.center,
+                  ),
+              ],
+            );
+          }
         ),
       ),
     );
