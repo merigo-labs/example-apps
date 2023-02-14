@@ -321,21 +321,21 @@ packages:
       name: solana_wallet_adapter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.2"
+    version: "0.0.2+2"
   solana_wallet_provider:
     dependency: "direct main"
     description:
-      path: "../../solana_wallet_provider"
-      relative: true
-    source: path
-    version: "0.0.2+1"
+      name: solana_wallet_provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   solana_web3:
     dependency: transitive
     description:
-      path: "../../solana_web3"
-      relative: true
-    source: path
-    version: "0.0.3+1"
+      name: solana_web3
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   source_span:
     dependency: transitive
     description:

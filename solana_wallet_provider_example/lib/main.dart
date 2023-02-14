@@ -76,7 +76,6 @@ class App extends StatelessWidget {
             ),
           ],
         ),
-        
         home: FutureBuilder(
           future: SolanaWalletProvider.initialize(),      // Initialize the provider.
           builder: _builder,

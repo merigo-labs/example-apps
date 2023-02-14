@@ -1,7 +1,6 @@
 /// Imports
 /// ------------------------------------------------------------------------------------------------
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:solana_wallet_provider/solana_wallet_provider.dart';
 import 'package:solana_wallet_provider_example/widgets/button.dart';
@@ -107,8 +106,6 @@ class _SendScreenState extends State<SendScreen> {
     );
   }
 
-  static Keypair _computeKeypair(final dynamic _) => Keypair.generate();
-
   Future<List<Transaction>> _transfer() async {
     final double? amount = double.tryParse(_amount);
     if (amount == null || amount <= 0) {
@@ -123,7 +120,7 @@ class _SendScreenState extends State<SendScreen> {
       instructions: [
         SystemProgram.transfer(
           fromPublicKey: wallet, 
-          toPublicKey: (await compute(_computeKeypair, null)).publicKey, 
+          toPublicKey: (await Keypair.generate()).publicKey, 
           lamports: solToLamports(amount),
         ),
       ],
