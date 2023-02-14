@@ -61,7 +61,7 @@ class _SignMessagesExamplePageState extends State<SignMessagesExamplePage> {
   bool _providerLoaded = false;
 
   /// The provider widget found in the widget tree.
-  late final SolanaWalletProviderState provider;
+  late final SolanaWalletProvider provider;
 
   /// SolanaWalletProvider.initialize().
   late final Future<void> _initFuture;
@@ -88,7 +88,7 @@ class _SignMessagesExamplePageState extends State<SignMessagesExamplePage> {
       setState(() => _message = 'Authorizing DApp...');
 
       // Get the authorization result or request authorization with a wallet endpoint.
-      final AuthorizeResult result = provider.authorizeResult ?? await provider.reauthorizeOrAuthorize();
+      final AuthorizeResult result = provider.authorizeResult ?? await provider.adapter.reauthorizeOrAuthorize();
 
       // Map the authorized wallet addresses to public keys.
       final List<PublicKey> accounts = result.accounts.map(
@@ -113,9 +113,9 @@ class _SignMessagesExamplePageState extends State<SignMessagesExamplePage> {
       setState(() => _message = 'Signing message(s)...');
 
       // Sign message with a wallet address.
-      final SignMessagesResult messageResult = await provider.signMessages(
-        messages: [message], 
-        addresses: [myWallet],
+      final SignMessagesResult messageResult = await provider.adapter.signMessages(
+        messages: [message.serialize().getString(BufferEncoding.base64)],
+        addresses: [myWallet.toBase64()],
       );
 
       setState(() => _message = 'Signed message(s)\n${messageResult.signedPayloads}');

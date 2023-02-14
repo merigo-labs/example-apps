@@ -33,7 +33,7 @@ dependencies:
     sdk: flutter
 
   # Solana packages.
-  solana_wallet_provider: ^0.0.1+1
+  solana_wallet_provider: ^0.0.2+1
 
 dev_dependencies:
   flutter_test:
