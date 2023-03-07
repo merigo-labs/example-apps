@@ -11,6 +11,6 @@ import 'package:solana_wallet_provider_example/main.dart';
 void main() {
   testWidgets('Test App', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const App());
+    await tester.pumpWidget(App());
   });
 }

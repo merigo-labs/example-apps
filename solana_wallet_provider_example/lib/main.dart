@@ -16,7 +16,7 @@ import 'widgets/secondary_button.dart';
 
 void main(final List<String> arguments) {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const App());
+  runApp(App());
 }
 
 
@@ -24,10 +24,8 @@ void main(final List<String> arguments) {
 /// ------------------------------------------------------------------------------------------------
 
 class App extends StatelessWidget {
-  
-  const App({
-    super.key,
-  });
+
+  const App({super.key});
 
   Widget _builder(final BuildContext context, final AsyncSnapshot snapshot) {
     return snapshot.connectionState != ConnectionState.done
@@ -45,7 +43,7 @@ class App extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     _setSystemUIOverlayStyle();
     return SolanaWalletProvider.create(                   // Wrap app with [SolanaWalletProvider].
       identity: AppIdentity(
@@ -60,9 +58,9 @@ class App extends StatelessWidget {
           useMaterial3: true,
           colorScheme: ColorPalette.scheme(),
           textTheme: const TextTheme(
-            bodyText2: TextStyle(
-              fontSize: 16.0
-            )
+            bodyMedium: TextStyle(
+              fontSize: 16.0,
+            ),
           ),
           extensions: [
             SolanaWalletThemeExtension(                   // Custom [SolanaWalletProvider] theme.

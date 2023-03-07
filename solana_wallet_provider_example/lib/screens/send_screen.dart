@@ -33,6 +33,12 @@ class _SendScreenState extends State<SendScreen> {
   double? _balance;
 
   @override
+  void initState() {
+    super.initState();
+    // SolanaWalletAdapterPlatform.instance.setProvider(AppInfo.phantom);
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _fetchBalance();
@@ -45,7 +51,10 @@ class _SendScreenState extends State<SendScreen> {
     provider.connection.requestAirdropAndConfirmTransaction(
       provider.connectedAccount!.toPublicKey(), 
       solToLamports(2).toInt(),
-    ).then((value) => print('Airdrop Complete $value'))
+    ).then((value) {
+      print('Airdrop Complete $value');
+      _fetchBalance();
+    })
      .catchError((error) => print('Airdrop Error $error'));
   }
 
@@ -179,6 +188,10 @@ class _SendScreenState extends State<SendScreen> {
             // Number pad.
             Column(
               children: [
+                TextButton(
+                  onPressed: _requestAirdrop, 
+                  child: const Text('Airdrop'),
+                ),
                 NumberPad(
                   enabled: _balance != null && provider.adapter.isAuthorized,
                   onChanged: _onChanged,
@@ -188,10 +201,22 @@ class _SendScreenState extends State<SendScreen> {
                   children: [
                     Expanded(
                       child: PrimaryButton(
+                        // onPressed: () async {
+                        //   final m = Transaction();
+                        //   m.add(
+                        //     MemoProgram.create('memo')
+                        //   );
+                        //   try {
+                        //      await provider.signTransactions(context, Future.value([m]));
+                        //   } catch(error, stackTrace) {
+                        //     print('SEND MESSAGES ERROR $error');
+                        //     print('SEND MESSAGES STACK $stackTrace');
+                        //   }
+                        // },
                         onPressed: () => provider.signAndSendTransactions(
                           context, 
                           _transfer(),
-                        ), 
+                        ).whenComplete(_fetchBalance), 
                         enabled: double.parse(_amount) != 0 && provider.adapter.isAuthorized,
                         child: const Text('Send'),
                       ),

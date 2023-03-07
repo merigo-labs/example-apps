@@ -27,19 +27,11 @@ class MethodsScreen extends StatefulWidget {
 class _MethodsScreenState extends State<MethodsScreen> {
 
   Future<AuthorizeResult> _authorize(final SolanaWalletProvider provider) {
-    return provider.authorize(context);
+    return provider.connect(context);
   }
   
   Future<DeauthorizeResult> _deauthorize(final SolanaWalletProvider provider) {
-    return provider.deauthorize(context);
-  }
-  
-  Future<ReauthorizeResult> _reauthorize(final SolanaWalletProvider provider) {
-    return provider.reauthorize(context);
-  }
-
-  Future<GetCapabilitiesResult> _getCapabilities(final SolanaWalletProvider provider) {
-    return provider.getCapabilities(context);
+    return provider.disconnect(context);
   }
 
   Future<SignTransactionsResult> _signTransactions(final SolanaWalletProvider provider) {
@@ -69,26 +61,27 @@ class _MethodsScreenState extends State<MethodsScreen> {
   }
 
   Future<SignMessagesResult> _signMessages(final SolanaWalletProvider provider) async {
-    return provider.connection.getLatestBlockhash()
-      .then((blockhash) {
-        final wallet = provider.connectedAccount!.toPublicKey();
-        final Transaction tx = Transaction(
-          recentBlockhash: blockhash.blockhash,
-          lastValidBlockHeight: blockhash.lastValidBlockHeight,
-          feePayer: wallet,
-          instructions: [
-            MemoProgram.create('Sign Transactions Test'),
-          ],
-        );
-        final MessagesAndAddresses msgs = MessagesAndAddresses(
-          messages: [tx.compileAndVerifyMessage()], 
-          addresses: [wallet],
-        );
-        return provider.signMessages(
-          context,
-          Future.value(msgs),
-        );
-      });
+    final wallet = provider.connectedAccount!.toPublicKey();
+    final MessagesAndAddresses msgs = MessagesAndAddresses(
+      messages: ['Hi message'], 
+      addresses: [wallet],
+    );
+    return provider.signMessages(
+      context,
+      Future.value(msgs),
+    );
+  }
+
+  Future<SignMessagesResult> _signInMessage(final SolanaWalletProvider provider) async {
+    final SignInMessage msgs = SignInMessage(
+      domain: 'localhost:59000',
+      uri: Uri.parse('ws://localhost:59000'),
+    );
+    print('DOMAIN ${msgs.domain}');
+    return provider.signInMessage(
+      context,
+      Future.value(msgs),
+    );
   }
 
   @override
@@ -112,22 +105,12 @@ class _MethodsScreenState extends State<MethodsScreen> {
                   SecondaryButton(
                     enabled: !provider.adapter.isAuthorized,
                     onPressed: () => _authorize(provider), 
-                    child: const Text('Authorize'),
+                    child: const Text('Connect'),
                   ),
                   SecondaryButton(
                     enabled: !provider.adapter.isAuthorized,
                     onPressed: () => _deauthorize(provider), 
-                    child: const Text('Deuthorize'),
-                  ),
-                  SecondaryButton(
-                    enabled: !provider.adapter.isAuthorized,
-                    onPressed: () => _reauthorize(provider), 
-                    child: const Text('Reauthorize'),
-                  ),
-                  SecondaryButton(
-                    enabled: !provider.adapter.isAuthorized,
-                    onPressed: () => _getCapabilities(provider), 
-                    child: const Text('Get Capabilities'),
+                    child: const Text('Disconnect'),
                   ),
                 ],
               ),
@@ -152,6 +135,11 @@ class _MethodsScreenState extends State<MethodsScreen> {
                     enabled: provider.adapter.isAuthorized,
                     onPressed: () => _signMessages(provider), 
                     child: const Text('Sign Messages'),
+                  ),
+                  SecondaryButton(
+                    enabled: provider.adapter.isAuthorized,
+                    onPressed: () => _signInMessage(provider), 
+                    child: const Text('Sign In'),
                   ),
                 ],
               ),
