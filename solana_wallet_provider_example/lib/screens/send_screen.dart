@@ -154,8 +154,6 @@ class _SendScreenState extends State<SendScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox.shrink(),
-
             // Input label.
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -188,10 +186,11 @@ class _SendScreenState extends State<SendScreen> {
             // Number pad.
             Column(
               children: [
-                TextButton(
-                  onPressed: _requestAirdrop, 
-                  child: const Text('Airdrop'),
-                ),
+                if (provider.adapter.isAuthorized)
+                  TextButton(
+                    onPressed: _requestAirdrop, 
+                    child: const Text('Airdrop'),
+                  ),
                 NumberPad(
                   enabled: _balance != null && provider.adapter.isAuthorized,
                   onChanged: _onChanged,

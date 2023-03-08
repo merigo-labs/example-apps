@@ -9,8 +9,6 @@ PODS:
     - FlutterMacOS
   - solana_wallet_adapter_ios (0.0.1):
     - Flutter
-  - url_launcher_ios (0.0.1):
-    - Flutter
   - webcrypto (0.1.1):
     - Flutter
 
@@ -19,7 +17,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
   - solana_wallet_adapter_ios (from `.symlinks/plugins/solana_wallet_adapter_ios/ios`)
-  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - webcrypto (from `.symlinks/plugins/webcrypto/ios`)
 
 SPEC REPOS:
@@ -35,8 +32,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/ios"
   solana_wallet_adapter_ios:
     :path: ".symlinks/plugins/solana_wallet_adapter_ios/ios"
-  url_launcher_ios:
-    :path: ".symlinks/plugins/url_launcher_ios/ios"
   webcrypto:
     :path: ".symlinks/plugins/webcrypto/ios"
 
@@ -46,7 +41,6 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
   solana_wallet_adapter_ios: 81801f1823b9a5870ead396706efd663b530e6fe
-  url_launcher_ios: fb12c43172927bb5cf75aeebd073f883801f1993
   webcrypto: 58dac29c85327d3d72a47d19d44128f10905f58e
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3

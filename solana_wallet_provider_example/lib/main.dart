@@ -15,8 +15,7 @@ import 'widgets/secondary_button.dart';
 /// ------------------------------------------------------------------------------------------------
 
 void main(final List<String> arguments) {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(App());
+  runApp(const App());
 }
 
 

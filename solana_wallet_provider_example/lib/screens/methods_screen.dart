@@ -108,7 +108,7 @@ class _MethodsScreenState extends State<MethodsScreen> {
                     child: const Text('Connect'),
                   ),
                   SecondaryButton(
-                    enabled: !provider.adapter.isAuthorized,
+                    enabled: provider.adapter.isAuthorized,
                     onPressed: () => _deauthorize(provider), 
                     child: const Text('Disconnect'),
                   ),
