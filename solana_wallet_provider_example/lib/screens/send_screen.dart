@@ -174,11 +174,11 @@ class _SendScreenState extends State<SendScreen> {
 
             SolanaWalletButton(
               onConnect: _onConnect,
-              connectBuilder: _connectBuilder,
-              connectStyle: Button.styleFrom(
+              connectedBuilder: _connectBuilder,
+              connectedStyle: Button.styleFrom(
                 padding: EdgeInsets.zero
               ),
-              disconnectStyle: Button.styleFrom(
+              disconnectedStyle: Button.styleFrom(
                 backgroundColor: ColorPalette.solana.first,
               ),
             ),

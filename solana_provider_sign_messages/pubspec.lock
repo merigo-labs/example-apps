@@ -352,59 +352,67 @@ packages:
   solana_common:
     dependency: transitive
     description:
-      path: "../../solana_common"
-      relative: true
-    source: path
+      name: solana_common
+      sha256: f62497f28908cf56f5ee1f2b7810f22f091a8b774bc5df28f15f1ce0102ff300
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.4+1"
   solana_wallet_adapter:
     dependency: transitive
     description:
-      path: "../../solana_wallet_adapter"
-      relative: true
-    source: path
-    version: "0.0.4+2"
+      name: solana_wallet_adapter
+      sha256: ab8080ed021722223a5355d0e7162ad0a3776ea77aae23a42c207b553a9d0da4
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5"
   solana_wallet_adapter_android:
     dependency: transitive
     description:
-      path: "../../solana_wallet_adapter_android"
-      relative: true
-    source: path
-    version: "0.0.2+1"
+      name: solana_wallet_adapter_android
+      sha256: de231b0f158c0b21a543750ebedc67ae9347d9a9f0dfaa3f12cafa173e175796
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   solana_wallet_adapter_ios:
     dependency: transitive
     description:
-      path: "../../solana_wallet_adapter_ios"
-      relative: true
-    source: path
-    version: "0.0.2+1"
+      name: solana_wallet_adapter_ios
+      sha256: "8cd3f0349ebcf82c182339198f320fddf1eab238a8c3e01751f2d1245fc1618c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   solana_wallet_adapter_platform_interface:
     dependency: transitive
     description:
-      path: "../../solana_wallet_adapter_platform_interface"
-      relative: true
-    source: path
-    version: "0.0.2+2"
+      name: solana_wallet_adapter_platform_interface
+      sha256: f82f3b3425639435a34c7211422317e581defa8931fc1e84a83f8912bde8ca2a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   solana_wallet_adapter_web:
     dependency: transitive
     description:
-      path: "../../solana_wallet_adapter_web"
-      relative: true
-    source: path
-    version: "0.0.2"
+      name: solana_wallet_adapter_web
+      sha256: f40c94d2b3a733fe4b18912eb03403ea4107bebb6ca8d44514cad471134b6ea6
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   solana_wallet_provider:
     dependency: "direct main"
     description:
-      path: "../../solana_wallet_provider"
-      relative: true
-    source: path
-    version: "0.0.5+2"
+      name: solana_wallet_provider
+      sha256: "4561a7b89fecde528b1415c5ff636b6ca18c143c17d8edcd5ea5a6478510afca"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   solana_web3:
     dependency: transitive
     description:
-      path: "../../solana_web3"
-      relative: true
-    source: path
-    version: "0.0.6+1"
+      name: solana_web3
+      sha256: f4824f0706e493f18a38dbedbd49f63ddb36a2917fee3dae7b3adca41dc82888
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6+2"
   source_span:
     dependency: transitive
     description:

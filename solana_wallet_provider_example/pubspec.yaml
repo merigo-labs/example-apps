@@ -31,7 +31,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  solana_wallet_provider: ^0.0.6
+  solana_wallet_provider: ^0.0.7
     # path: ../../solana_wallet_provider
     
 dev_dependencies:

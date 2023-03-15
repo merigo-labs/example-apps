@@ -353,66 +353,66 @@ packages:
     dependency: transitive
     description:
       name: solana_common
-      sha256: f62497f28908cf56f5ee1f2b7810f22f091a8b774bc5df28f15f1ce0102ff300
+      sha256: "5cee19ee527a76c97de4b6462b779729fd5acfb9085fe1eb090fcd575c1f284c"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.4+1"
+    version: "0.0.5"
   solana_wallet_adapter:
     dependency: transitive
     description:
       name: solana_wallet_adapter
-      sha256: ab8080ed021722223a5355d0e7162ad0a3776ea77aae23a42c207b553a9d0da4
+      sha256: "53168752d2e69e3a245e813ff36e3c9557366c53a2a3b4e9d683885d2a486acc"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.5"
+    version: "0.0.6"
   solana_wallet_adapter_android:
     dependency: transitive
     description:
       name: solana_wallet_adapter_android
-      sha256: de231b0f158c0b21a543750ebedc67ae9347d9a9f0dfaa3f12cafa173e175796
+      sha256: ffcdc6c74871af611a014b9db24fe0d86c20d1caacea6bb6978c19f8f5faf0fc
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.3"
+    version: "0.0.4"
   solana_wallet_adapter_ios:
     dependency: transitive
     description:
       name: solana_wallet_adapter_ios
-      sha256: "8cd3f0349ebcf82c182339198f320fddf1eab238a8c3e01751f2d1245fc1618c"
+      sha256: "4c67a56a35470454a0e63745d4c12647844d8f4011b383ab30556db571727dc1"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.3"
+    version: "0.0.4"
   solana_wallet_adapter_platform_interface:
     dependency: transitive
     description:
       name: solana_wallet_adapter_platform_interface
-      sha256: f82f3b3425639435a34c7211422317e581defa8931fc1e84a83f8912bde8ca2a
+      sha256: "6469f19db8b210b56b2a1fe571dc8792a9cb85986ecd23023602a8cfa7d344f8"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.3"
+    version: "0.0.4"
   solana_wallet_adapter_web:
     dependency: transitive
     description:
       name: solana_wallet_adapter_web
-      sha256: f40c94d2b3a733fe4b18912eb03403ea4107bebb6ca8d44514cad471134b6ea6
+      sha256: "8447080c850ec1b926ea1dec383b15b5baf9220a9e1620595161a1894958b14a"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.3"
+    version: "0.0.4"
   solana_wallet_provider:
     dependency: "direct main"
     description:
       name: solana_wallet_provider
-      sha256: "4561a7b89fecde528b1415c5ff636b6ca18c143c17d8edcd5ea5a6478510afca"
+      sha256: "49c5a5a4d992148175dfd4c6f6b308b650965db0d9408eb59f938f7dd9cd57b6"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.6"
+    version: "0.0.7"
   solana_web3:
     dependency: transitive
     description:
       name: solana_web3
-      sha256: f4824f0706e493f18a38dbedbd49f63ddb36a2917fee3dae7b3adca41dc82888
+      sha256: c5f4b629a24b6fdf2abab642b3418852d6c292c41244054817e4340e096fca66
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.6+2"
+    version: "0.0.7"
   source_span:
     dependency: transitive
     description:

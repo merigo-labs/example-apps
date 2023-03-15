@@ -24,7 +24,9 @@ void main(final List<String> arguments) {
 
 class App extends StatelessWidget {
 
-  const App({super.key});
+  const App({
+    super.key,
+  });
 
   Widget _builder(final BuildContext context, final AsyncSnapshot snapshot) {
     return snapshot.connectionState != ConnectionState.done
