@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:solana_wallet_adapter/solana_wallet_adapter.dart';
-import 'package:solana_web3/programs/index.dart';
+import 'package:solana_web3/programs.dart';
 import 'package:solana_web3/solana_web3.dart';
 
 
@@ -85,10 +85,10 @@ class _ExmapleAppState extends State<ExmapleApp> {
   }
 
   /// Requests an airdrop of 2 SOL for [wallet].
-  Future<void> _airdrop(final Connection connection, final PublicKey wallet) async {
+  Future<void> _airdrop(final Connection connection, final Pubkey wallet) async {
     if (cluster != Cluster.mainnet) {
       setState(() => _status = "Requesting airdrop...");
-      await connection.requestAirdropAndConfirmTransaction(wallet, solToLamports(2).toInt());
+      await connection.requestAndConfirmAirdrop(wallet, solToLamports(2).toInt());
     }
   }
 
@@ -98,7 +98,7 @@ class _ExmapleAppState extends State<ExmapleApp> {
     try {
       // Check connected wallet.
       setState(() => _status = "Pending...");
-      final PublicKey? wallet = PublicKey.tryFromBase64(adapter.connectedAccount?.address);
+      final Pubkey? wallet = Pubkey.tryFromBase64(adapter.connectedAccount?.address);
       if (wallet == null) {
         return setState(() => _status = 'Wallet not connected');
       }
@@ -114,14 +114,13 @@ class _ExmapleAppState extends State<ExmapleApp> {
       final Keypair receiver = Keypair.generateSync();
       final BigInt amount = solToLamports(0.1);
       final latestBlockhash = await connection.getLatestBlockhash();
-      final tx = Transaction(
-        feePayer: wallet,
+      final tx = Transaction.v0(
+        payer: wallet,
         recentBlockhash: latestBlockhash.blockhash,
-        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
         instructions: [
           SystemProgram.transfer(
-            fromPublicKey: wallet, 
-            toPublicKey: receiver.publicKey, 
+            fromPubkey: wallet, 
+            toPubkey: receiver.pubkey, 
             lamports: amount
           )
         ]
@@ -129,24 +128,23 @@ class _ExmapleAppState extends State<ExmapleApp> {
 
       // Sign the transaction with the wallet and broadcast it to the network.
       setState(() => _status = "Sign and Send transaction...");
-      const config = SerializeConfig(requireAllSignatures: false);
-      final String encodedTx = tx.serialize(config).getString(BufferEncoding.base64);
+      final String encodedTx = adapter.encodeTransaction(tx);
       final SignAndSendTransactionsResult result = await adapter.signAndSendTransactions(
-        transactions: [encodedTx],
+        [encodedTx],
       );
 
       // Wait for confirmation (You need to convert the base-64 signatures to base-58!).
       setState(() => _status = "Confirming transaction signature...");
-      await connection.confirmTransaction(base64ToBase58(result.signatures.first!));
+      await connection.confirmTransaction(base58To64Decode(result.signatures.first!));
 
       // Get the receiver wallet's new balance.
       setState(() => _status = "Checking balance...");
-      final int receiverBalance = await connection.getBalance(receiver.publicKey);
+      final int receiverBalance = await connection.getBalance(receiver.pubkey);
 
       // Output the result.
       setState(() => _status = "Success!\n\n"
         "Signatures: ${result.signatures}\n\n"
-        "Transfer: ${receiver.publicKey} received $receiverBalance LAMPORTS");
+        "Transfer: ${receiver.pubkey} received $receiverBalance LAMPORTS");
 
     } catch (error) {
       print('Sign Transactions Error: $error');
@@ -167,13 +165,13 @@ class _ExmapleAppState extends State<ExmapleApp> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  '${adapter.connectedAccount?.addressBase58}',
+                  '${adapter.connectedAccount?.toBase58()}',
                   textAlign: TextAlign.center,
                 ),
                 ElevatedButton(
                   onPressed: _disconnect, 
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  child: const Text('Disonnect'),
+                  child: const Text('Disconnect'),
                 ),
               ],
             )

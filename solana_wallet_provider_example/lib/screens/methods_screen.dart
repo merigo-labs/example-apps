@@ -26,6 +26,8 @@ class MethodsScreen extends StatefulWidget {
 
 class _MethodsScreenState extends State<MethodsScreen> {
 
+  Pubkey _wallet(final SolanaWalletProvider provider) => provider.connectedAccount!.toPubkey();
+
   Future<AuthorizeResult> _authorize(final SolanaWalletProvider provider) {
     return provider.connect(context);
   }
@@ -34,53 +36,58 @@ class _MethodsScreenState extends State<MethodsScreen> {
     return provider.disconnect(context);
   }
 
-  Future<SignTransactionsResult> _signTransactions(final SolanaWalletProvider provider) {
-    final Transaction tx = Transaction(
+  Future<SignTransactionsResult> _signTransactions(final SolanaWalletProvider provider) async {
+    final bh = await provider.connection.getLatestBlockhash();
+    return _signTransactionsWithBlockhash(provider, bh.blockhash);
+  }
+
+  Future<SignTransactionsResult> _signTransactionsWithBlockhash(
+    final SolanaWalletProvider provider,
+    final String blockhash,  
+  ) {
+    final Transaction tx = Transaction.v0(
+      payer: _wallet(provider),
+      recentBlockhash: blockhash,
       instructions: [
         MemoProgram.create('Sign Transactions Test'),
       ],
     );
     return provider.signTransactions(
       context,
-      Future.value([tx]),
+      transactions: [tx],
     );
   }
 
   Future<SignAndSendTransactionsResult> _signAndSendTransactions(
     final SolanaWalletProvider provider,
+  ) async {
+    final bh = await provider.connection.getLatestBlockhash();
+    return _signAndSendTransactionsWithBlockhash(provider, bh.blockhash);
+  }
+
+  Future<SignAndSendTransactionsResult> _signAndSendTransactionsWithBlockhash(
+    final SolanaWalletProvider provider,
+    final String blockhash, 
   ) {
-    final Transaction tx = Transaction(
+    final Transaction tx = Transaction.v0(
+      payer: _wallet(provider),
+      recentBlockhash: blockhash,
       instructions: [
         MemoProgram.create('Sign Transactions Test'),
       ],
     );
     return provider.signAndSendTransactions(
       context,
-      Future.value([tx]),
+      transactions: [tx],
     );
   }
 
   Future<SignMessagesResult> _signMessages(final SolanaWalletProvider provider) async {
-    final wallet = provider.connectedAccount!.toPublicKey();
-    final MessagesAndAddresses msgs = MessagesAndAddresses(
-      messages: ['Hi message'], 
-      addresses: [wallet],
-    );
+    final wallet = provider.connectedAccount!.toPubkey();
     return provider.signMessages(
       context,
-      Future.value(msgs),
-    );
-  }
-
-  Future<SignMessagesResult> _signInMessage(final SolanaWalletProvider provider) async {
-    final SignInMessage msgs = SignInMessage(
-      domain: 'localhost:59000',
-      uri: Uri.parse('ws://localhost:59000'),
-    );
-    print('DOMAIN ${msgs.domain}');
-    return provider.signInMessage(
-      context,
-      Future.value(msgs),
+      messages: ['Hi message'],
+      addresses: [wallet.toBase58()]
     );
   }
 
@@ -135,11 +142,6 @@ class _MethodsScreenState extends State<MethodsScreen> {
                     enabled: provider.adapter.isAuthorized,
                     onPressed: () => _signMessages(provider), 
                     child: const Text('Sign Messages'),
-                  ),
-                  SecondaryButton(
-                    enabled: provider.adapter.isAuthorized,
-                    onPressed: () => _signInMessage(provider), 
-                    child: const Text('Sign In'),
                   ),
                 ],
               ),

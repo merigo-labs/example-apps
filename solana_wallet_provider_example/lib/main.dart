@@ -4,7 +4,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:solana_wallet_provider/solana_wallet_provider.dart';
-import 'package:solana_wallet_provider_example/screens/methods_screen.dart';
 import 'package:solana_wallet_provider_example/screens/send_screen.dart';
 import 'themes/color_palette.dart';
 import 'widgets/primary_button.dart';
@@ -52,7 +51,7 @@ class App extends StatelessWidget {
         icon: Uri.parse('favicon.png'),                   // Relative path from [uri] to your icon.
         name: 'Merigo Labs',                              // Your app's name.
       ), 
-      cluster: Cluster.devnet,
+      httpCluster: Cluster.devnet,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -65,7 +64,7 @@ class App extends StatelessWidget {
           ),
           extensions: [
             SolanaWalletThemeExtension(                   // Custom [SolanaWalletProvider] theme.
-              cardTheme: SolanaWalletCardTheme(
+              cardTheme: SolanaWalletModalCardTheme(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.0),
                 ),

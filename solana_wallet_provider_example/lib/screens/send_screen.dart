@@ -48,8 +48,8 @@ class _SendScreenState extends State<SendScreen> {
 
   void _requestAirdrop() {
     final SolanaWalletProvider provider = SolanaWalletProvider.of(context);
-    provider.connection.requestAirdropAndConfirmTransaction(
-      provider.connectedAccount!.toPublicKey(), 
+    provider.connection.requestAndConfirmAirdrop(
+      provider.connectedAccount!.toPubkey(), 
       solToLamports(2).toInt(),
     ).then((value) {
       print('Airdrop Complete $value');
@@ -60,7 +60,7 @@ class _SendScreenState extends State<SendScreen> {
 
   void _fetchBalance() {
     final SolanaWalletProvider provider = SolanaWalletProvider.of(context);
-    final PublicKey? wallet = provider.connectedAccount?.toPublicKey();
+    final Pubkey? wallet = provider.connectedAccount?.toPubkey();
     if (wallet != null) {
       provider.connection.getBalance(wallet)
         .then((balance) => setState(() => _balance = lamportsToSol(balance.toBigInt())))
@@ -121,20 +121,33 @@ class _SendScreenState extends State<SendScreen> {
       return Future.error('Invalid amount $_amount');
     }
     final SolanaWalletProvider provider = SolanaWalletProvider.of(context);
-    final PublicKey? wallet = provider.connectedAccount?.toPublicKey();
+    final Pubkey? wallet = provider.connectedAccount?.toPubkey();
     if (wallet == null) {
       return Future.error('Wallet disconnected.');
     }
-    final tx = Transaction(
+    final bh = await provider.connection.getLatestBlockhash();
+    final tx = Transaction.v0(
+      payer: wallet,
+      recentBlockhash: bh.blockhash,
       instructions: [
         SystemProgram.transfer(
-          fromPublicKey: wallet, 
-          toPublicKey: (await Keypair.generate()).publicKey, 
+          fromPubkey: wallet, 
+          toPubkey: (await Keypair.generate()).pubkey, 
           lamports: solToLamports(amount),
         ),
       ],
     );
     return [tx];
+  }
+
+  void _signAndSend(
+    final SolanaWalletProvider provider, 
+    final List<Transaction> transactions,
+  ) {
+    provider.signAndSendTransactions(
+      context, 
+      transactions: transactions,
+    ).whenComplete(_fetchBalance);
   }
 
   @override
@@ -212,10 +225,10 @@ class _SendScreenState extends State<SendScreen> {
                         //     print('SEND MESSAGES STACK $stackTrace');
                         //   }
                         // },
-                        onPressed: () => provider.signAndSendTransactions(
-                          context, 
-                          _transfer(),
-                        ).whenComplete(_fetchBalance), 
+                        onPressed: () async {
+                          final txs = await _transfer();
+                          _signAndSend(provider, txs);
+                        },
                         enabled: double.parse(_amount) != 0 && provider.adapter.isAuthorized,
                         child: const Text('Send'),
                       ),
