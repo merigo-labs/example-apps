@@ -9,9 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # Add packages.
-  solana_web3: ^0.1.0
-  solana_wallet_adapter: ^0.1.0
+  # Add latest packages.
+  solana_web3: ^0.1.1
+  solana_wallet_adapter: ^0.1.1
 
 
 dev_dependencies:

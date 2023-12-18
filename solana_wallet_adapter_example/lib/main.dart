@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:solana_wallet_adapter/solana_wallet_adapter.dart';
 import 'package:solana_web3/programs.dart';
 import 'package:solana_web3/solana_web3.dart';
+import 'package:solana_web3/solana_web3.dart' as web3;
 
 
 /// Main
@@ -152,6 +153,43 @@ class _ExmapleAppState extends State<ExmapleApp> {
     }
   }
 
+  Future<void> _debugGitHub() async {
+    try {
+      final adapter = SolanaWalletAdapter(
+        const AppIdentity(),
+        cluster: Cluster.devnet,
+      );
+
+      var blockHash = await web3.Connection(Cluster.devnet).getLatestBlockhash();
+
+      AuthorizeResult result = await adapter.authorize();
+
+      final payer = web3.Pubkey.fromBase64(result.accounts[0].address);
+      final transaction = web3.Transaction.v0(
+        payer: payer, 
+        recentBlockhash: blockHash.blockhash,
+        instructions: [
+          SystemProgram.transfer(
+            fromPubkey: payer,
+            toPubkey: web3.Pubkey.fromBase58('3zH9A4Yo65EWTdYppQNWBK3mXExbaNNQ2P3PpWVkLspA'),
+            lamports: web3.solToLamports(0.01),
+          ),
+        ],
+      );
+
+      var res = await adapter.signAndSendTransactions(
+        [
+          adapter.encodeTransaction(transaction)
+        ],
+      );
+
+      print(res.signatures[0]);
+    } catch (error, stack) {
+      print('DEBUG GITHUB ERROR $error');
+      print('DEBUG GITHUB STACK $stack');
+    }
+  }
+
   Widget _builder(final BuildContext context, AsyncSnapshot snapshot) {
     if (snapshot.connectionState != ConnectionState.done) {
       return const CircularProgressIndicator();
@@ -184,6 +222,11 @@ class _ExmapleAppState extends State<ExmapleApp> {
         ElevatedButton(
           onPressed: adapter.isAuthorized ? _signTransactions : null, 
           child: const Text('Sign Transactions'),
+        ),
+        // Debug GitHub
+        ElevatedButton(
+          onPressed: _debugGitHub, 
+          child: const Text('Debug GitHub Issue'),
         ),
         Text(_status ?? ''),
       ],
